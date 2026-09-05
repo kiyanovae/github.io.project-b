@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Навигация Катя</title>
+    
+    <!-- Подключение стилей из вашего примера -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- MathJax для красивых формул -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']]
+        }
+      };
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #9b59b6;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+            --bg-light: #ecf0f1;
+        }
+        
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .nav-card {
+            background: var(--card-bg);
+            padding: 30px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            text-decoration: none;
+            border: 1px solid #eee;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            border-color: var(--primary-color);
+        }
+        
+        .nav-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .nav-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .nav-desc {
+            color: #7f8c8d;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        
+        .welcome-note {
+            background: linear-gradient(135deg, var(--primary-color), #6c5ce7);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 20px rgba(155, 155, 187, 0.3);
+        }
+        
+        .footer-nav {
+            text-align: center;
+            margin-top: 50px;
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="welcome-note card">
+        <h1 style="margin-top: 0;">Специально для Кати👋</h1>
+
+    </div>
+
+    <section class="card practice-block">
+        <h2>📚 Навигация по темам</h2>
+        <p class="instruction">Выберите раздел, который хотите повторить или проверить:</p>
+
+        <div class="nav-grid">
+
+            <!-- Таблица по триганометрии  -->
+            <a href="таблица синусов и косинусов.html" class="nav-card">
+                <div class="nav-icon">📐</div>
+                <div class="nav-title">Тригонометрическая таблица</div>
+                <div class="nav-desc">Значения $\sin$, $\cos$, $\text{tg}$ от $0^{\circ}$ до $180^{\circ}$. Правило руки.</div>
+            </a>
+
+            <!-- Повторение тригонометрии -->
+            <a href="тригонометрия повтор.html" class="nav-card">
+                <div class="nav-icon">👩‍🎓</div>
+                <div class="nav-title"> Тригонометрия — повторение</div>
+                <div class="nav-desc">Формулы приведения, основные тождества и уравнения ЕГЭ №13.</div>
+            </a>
+
+            <!--Стереометрия (наша третья созданная страница) -->
+            <a href="повторение стереометрии.html" class="nav-card">
+                <div class="nav-icon">📦</div>
+                <div class="nav-title"> Стереометрия - повторение</div>
+                <div class="nav-desc">Объемы призм, пирамид, цилиндров, конусов и шаров.</div>
+            </a>
+
+        </div>
+    </section>
+
+    <footer class="page-footer">
+        <div class="footer-nav">
+            <p>Систематизировано Елизаветой Кияновой &amp; GigaChat</p>
+            <p>Рекомендуется решать задания последовательно от легких к сложным.</p>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // Небольшой скрипт для плавной прокрутки при клике (опционально)
+    document.querySelectorAll('a.nav-card').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            
+            // Проверяем, существует ли файл (в реальном проекте). 
+            // Здесь просто переходим по ссылке:
+            window.location.href = targetId;
+        });
+    });
+</script>
+
+</body>
+</html>

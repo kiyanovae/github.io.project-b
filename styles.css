@@ -1,0 +1,167 @@
+/* Сброс стандартных отступов браузера */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f7fc;
+    color: #333;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.page-header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.theory-block h2, .practice-block h2 {
+    color: #34495e;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.theory-block ul, .theory-block ol {
+    padding-left: 25px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.theory-block li {
+    margin-bottom: 8px;
+}
+
+.formula {
+    background-color: #ecf0f1;
+    border-left: 5px solid #2980b9;
+    padding: 15px;
+    margin: 15px 0;
+    font-size: 1.1em;
+    display: inline-block;
+    width: 100%;
+}
+
+.practice-block .instruction {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 25px;
+}
+
+.task-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.task-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background-color: #3498db;
+}
+
+.equation {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    /* Включаем красивую формулу MathJax/Katex, если они подключены */
+}
+
+.answer {
+    display: none;
+    background-color: #fdebd0;
+    border: 1px dashed #f39c12;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-weight: normal !important;
+}
+
+button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: background-color 0.2s;
+}
+
+button:hover {
+    background-color: #229954;
+}
+
+.page-footer {
+    text-align: center;
+    color: #95a5a6;
+    margin-top: 40px;
+    font-size: 0.9em;
+}
+
+/* Исключения для корректного отображения формул */
+.katex, .katex-display {
+    font-size: 1.1em !important; /* Делаем чуть крупнее для читаемости */
+    color: inherit !important;   /* Чтобы формула брала цвет от заголовка, а не была черной */
+}
+
+/* Защита от "съедания" жирности шрифта */
+.MathJax, .katex {
+    font-weight: bold !important;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    .card {
+        padding: 15px;
+    }
+    .equation {
+        font-size: 1.1em;
+    }
+}

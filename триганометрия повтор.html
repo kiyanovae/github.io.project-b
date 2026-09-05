@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тригонометрия | Повторение 10 класс</title>
+    
+    <!-- Подключение стилей из вашего примера -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- MathJax для красивых формул -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']]
+        }
+      };
+    </script>
+
+    <style>
+        /* Дополнительные стили специально для этого урока */
+        :root {
+            --primary-color: #2980b9;
+            --success-color: #27ae60;
+            --warning-color: #d35400;
+            --danger-color: #c0392b;
+            --bg-light: #f4f6f7;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            color: white;
+            margin-right: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-easy { background-color: var(--success-color); }
+        .badge-medium { background-color: var(--warning-color); }
+        .badge-hard { background-color: var(--danger-color); }
+
+        .toggle-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            align-self: flex-start;
+            margin-top: 8px;
+        }
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .solution-content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #bdc3c7;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .rule-box {
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+        
+        .homework-section h2 {
+            color: var(--danger-color);
+            border-bottom: 2px solid var(--danger-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header card">
+        <h1>Блок 2: Тригонометрия</h1>
+        <p class="subtitle">Систематизация знаний за 10 класс: формулы приведения, основные тождества, уравнения.</p>
+    </div>
+
+    <!-- ОПОРНЫЙ МАТЕРИАЛ -->
+    <section class="card theory-block">
+        <h2>📘 Опорный материал</h2>
+        
+        <h3>1. Радианная мера угла</h3>
+        <div class="formula">
+            $180^{\circ} = \pi \text{ рад}$ &nbsp;&nbsp;&nbsp;&nbsp; $x^{\circ} = x \cdot \frac{\pi}{180}$
+        </div>
+        <div class="rule-box"><strong>Важно:</strong> Запомните ключевые точки: $30^{\circ} = \frac{\pi}{6}$, $45^{\circ} = \frac{\pi}{4}$, $60^{\circ} = \frac{\pi}{3}$, $90^{\circ} = \frac{\pi}{2}$.</div>
+
+        <h3>2. Знаки функций по четвертям</h3>
+        <ul>
+            <li><strong>I четверть ($0 < \alpha < \frac{\pi}{2}$):</strong> все функции (+)</li>
+            <li><strong>II четверть ($\frac{\pi}{2} < \alpha < \pi$):</strong> sin (+), cos (-), tg (-), ctg (-)</li>
+            <li><strong>III четверть ($\pi < \alpha < \frac{3\pi}{2}$):</strong> tg (+), ctg (+), sin (-), cos (-)</li>
+            <li><strong>IV четверть ($\frac{3\pi}{2} < \alpha < 2\pi$):</strong> cos (+), sin (-), tg (-), ctg (-)</li>
+        </ul>
+
+        <h3>3. Формулы приведения</h3>
+        <div class="rule-box">Мнемоническое правило: меняется ли название функции? Если опорная точка — вертикальная ось ($\frac{\pi}{2}, \frac{3\pi}{2}$) — да («киваем головой»). Если горизонтальная ($0, \pi, 2\pi$) — нет («мотаем головой»). Знак ставим по исходной функции.</div>
+        Примеры: $\sin(\pi - \alpha) = \sin\alpha$; $\cos(\frac{\pi}{2} + \alpha) = -\sin\alpha$.
+
+        <h3>4. Основные тригонометрические тождества</h3>
+        <div class="formula">
+            $\sin^2\alpha + \cos^2\alpha = 1$
+        </div>
+        <div class="formula">
+            $1 + \text{tg}^2\alpha = \frac{1}{\cos^2\alpha}$ &nbsp;&nbsp;&nbsp;&nbsp; $1 + \text{ctg}^2\alpha = \frac{1}{\sin^2\alpha}$
+        </div>
+        <div class="formula">
+            $\text{tg}\alpha = \frac{\sin\alpha}{\cos\alpha}$ &nbsp;&nbsp;&nbsp;&nbsp; $\text{ctg}\alpha = \frac{\cos\alpha}{\sin\alpha}$
+        </div>
+
+        <h3>5. Формулы двойного аргумента</h3>
+        <div class="formula">
+            $\sin 2\alpha = 2\sin\alpha\cos\alpha$
+        </div>
+        <div class="formula">
+            $\cos 2\alpha = \cos^2\alpha - \sin^2\alpha = 2\cos^2\alpha - 1 = 1 - 2\sin^2\alpha$
+        </div>
+
+        <h3>6. Формулы суммы и разности</h3>
+        
+        <div class="formula">
+            $\sin\alpha \pm \sin\beta = 2\sin\frac{\alpha \pm \beta}{2}\cos\frac{\alpha \mp \beta}{2}$
+        </div>
+        <div class="rule-box"><strong>Подсказка:</strong> Сумма синусов дает произведение синуса (на полусумму) и косинуса (на полуразность).</div>
+
+        <div class="formula">
+            $\cos\alpha + \cos\beta = 2\cos\frac{\alpha + \beta}{2}\cos\frac{\alpha - \beta}{2}$
+        </div>
+        <div class="formula">
+            $\cos\alpha - \cos\beta = -2\sin\frac{\alpha + \beta}{2}\sin\frac{\alpha - \beta}{2}$
+        </div>
+        <div class="rule-box"><strong>Подсказка:</strong> Обратите внимание: сумма косинусов — это всегда два косинуса, а разность косинусов — это всегда два синуса. В формуле разности перед дробью появляется минус.</div>
+
+        <div class="formula">
+            $\text{tg}\alpha \pm \text{tg}\beta = \frac{\sin(\alpha \pm \beta)}{\cos\alpha \cos\beta}$
+        </div>
+    </section>
+
+    <!-- БЛОК ССЫЛКИ НА ТАБЛИЦУ -->
+    <div style="text-align: center; margin: 30px 0; padding: 20px; background-color: #e8f4fc; border-radius: 10px; border-left: 5px solid #3498db;">
+        <h3 style="margin-top: 0; color: #2c3e50;">📋 Нужны точные значения функций?</h3>
+        <p>Если вы забыли таблицу тригонометрических значений синусов и косинусов для стандартных углов ($30^{\circ}, 45^{\circ}, 60^{\circ}$), воспользуйтесь нашей подробной шпаргалкой.</p>
+        <a href="таблица синусов и косинусов.html" target="_blank" style="
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        ">Открыть таблицу значений $\sin$ и $\cos$ →</a>
+    </div>
+
+    <!-- ПРИМЕРЫ РЕШЕНИЯ -->
+    <section class="card practice-block">
+        <h2>✏️ Разбор примеров</h2>
+        <p class="instruction">Алгоритм решения типовых заданий перед самостоятельной работой.</p>
+
+        <div class="task-card">
+            <div class="equation">Пример 1. Упростите: $\sin(\frac{3\pi}{2} - \alpha)$</div>
+            <button class="toggle-btn" onclick="showSolution('ex-1')">Показать решение</button>
+            <div id="ex-1" class="solution-content">
+                Используем формулу приведения. Угол $\frac{3\pi}{2}$ лежит на вертикальной оси — функция меняется на кофункцию (синус на косинус). Угол $\frac{3\pi}{2} - \alpha$ находится в III четверти, там синус отрицательный.<br>
+                $\sin(\frac{3\pi}{2} - \alpha) = -\cos\alpha$.<br>
+                <strong>Ответ:</strong> $-\cos\alpha$.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="equation">Пример 2. Вычислите: $\sin 150^{\circ}$</div>
+            <button class="toggle-btn" onclick="showSolution('ex-2')">Показать решение</button>
+            <div id="ex-2" class="solution-content">
+                Представляем как $\sin(180^{\circ} - 30^{\circ})$. II четверть, синус положительный, функция не меняется.<br>
+                $\sin(180^{\circ} - 30^{\circ}) = \sin 30^{\circ} = 0.5$.<br>
+                <strong>Ответ:</strong> 0.5.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="equation">Пример 3. Решите уравнение: $2\cos^2 x - 1 = 0$ на $[0; 2\pi]$</div>
+            <button class="toggle-btn" onclick="showSolution('ex-3')">Показать решение</button>
+            <div id="ex-3" class="solution-content">
+                Узнаем формулу косинуса двойного угла: $\cos 2x = 0$.<br>
+                $2x = \frac{\pi}{2} + \pi k$<br>
+                $x = \frac{\pi}{4} + \frac{\pi k}{2}$.<br>
+                Отбираем корни на промежутке $[0; 2\pi]$: $\frac{\pi}{4}, \frac{3\pi}{4}, \frac{5\pi}{4}, \frac{7\pi}{4}$.<br>
+                <strong>Ответ:</strong> $\frac{\pi}{4} + \frac{\pi k}{2}, k \in \mathbb{Z}$.
+            </div>
+        </div>
+    </section>
+
+    <!-- ЗАДАНИЯ ДЛЯ САМОСТОЯТЕЛЬНОГО РЕШЕНИЯ (Тренировка ~40 мин) -->
+    <section class="card practice-block">
+        <h2>📝 Задания для самостоятельного решения</h2>
+        <p class="instruction">Решите задачи самостоятельно. Нажмите кнопку, чтобы проверить ответ.</p>
+
+        <!-- Задача 1: Простая формула приведения -->
+        <div class="task-card">
+            <span class="difficulty-badge badge-easy">Легкий</span>
+            <div class="equation">Задание 1. Упростите выражение: $\cos(\pi + \alpha) + \sin(\frac{\pi}{2} + \alpha)$</div>
+            <button class="toggle-btn" onclick="showSolution('sol-1')">Показать решение</button>
+            <div id="sol-1" class="solution-content">
+                <strong>Решение:</strong><br>
+                $\cos(\pi + \alpha) = -\cos\alpha$ (III четв., гориз. ось, знак минус)<br>
+                $\sin(\frac{\pi}{2} + \alpha) = \cos\alpha$ (II четв., верт. ось, функц. меняет знак, но угол $(\frac{\pi}{2}+\alpha)$ дает плюс при переходе во II четв.)<br>
+                $-\cos\alpha + \cos\alpha = 0$.<br>
+                <strong>Ответ:</strong> 0.
+            </div>
+        </div>
+
+        <!-- Задача 2: Вычисление через радианы -->
+        <div class="task-card">
+            <span class="difficulty-badge badge-easy">Легкий</span>
+            <div class="equation">Задание 2. Найдите значение выражения: $2\sin\frac{7\pi}{6} - \sqrt{3}\cos\frac{5\pi}{3}$</div>
+            <button class="toggle-btn" onclick="showSolution('sol-2')">Показать решение</button>
+            <div id="sol-2" class="solution-content">
+                <strong>Решение:</strong><br>
+                $\sin\frac{7\pi}{6} = \sin(\pi + \frac{\pi}{6}) = -0.5$<br>
+                $\cos\frac{5\pi}{3} = \cos(2\pi - \frac{\pi}{3}) = 0.5$<br>
+                $2 \cdot (-0.5) - \sqrt{3} \cdot 0.5 = -1 - \frac{\sqrt{3}}{2}$.<br>
+                <strong>Ответ:</strong> $-1 - \frac{\sqrt{3}}{2}$.
+            </div>
+        </div>
+
+        <!-- Задача 3: Основное тождество -->
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">Задание 3. Известно, что $\sin\alpha = \frac{3}{5}$, $\alpha \in (\frac{\pi}{2}; \pi)$. Найдите $\text{tg}\alpha$.</div>
+            <button class="toggle-btn" onclick="showSolution('sol-3')">Показать решение</button>
+            <div id="sol-3" class="solution-content">
+                <strong>Решение:</strong><br>
+                $\cos^2\alpha = 1 - \sin^2\alpha = 1 - \frac{9}{25} = \frac{16}{25}$. Так как $\alpha$ во II четверти, $\cos\alpha = -0.8$.<br>
+                $\text{tg}\alpha = \frac{\sin\alpha}{\cos\alpha} = \frac{0.6}{-0.8} = -0.75$.<br>
+                <strong>Ответ:</strong> $-0.75$.
+            </div>
+        </div>
+
+        <!-- Задача 4: Однородное уравнение или замена -->
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">Задание 4. Решите уравнение: $\sin x - \sqrt{3}\cos x = 0$</div>
+            <button class="toggle-btn" onclick="showSolution('sol-4')">Показать решение</button>
+            <div id="sol-4" class="solution-content">
+                <strong>Решение:</strong><br>
+                Это однородное уравнение 1-й степени. Делим на $\cos x$ (он не равен 0, иначе и синус был бы 0, что невозможно):<br>
+                $\text{tg}x - \sqrt{3} = 0 \Rightarrow \text{tg}x = \sqrt{3}$.<br>
+                $x = \frac{\pi}{3} + \pi k, k \in \mathbb{Z}$.<br>
+                <strong>Ответ:</strong> $\frac{\pi}{3} + \pi k, k \in \mathbb{Z}$.
+            </div>
+        </div>
+
+        <!-- НОВЫЕ ЗАДАЧИ ТРЕНИРОВОЧНОГО БЛОКА -->
+
+        <!-- Задача 5: Формула суммы синусов -->
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">Задание 5. Решите уравнение: $\sin x + \sin 3x = 0$</div>
+            <button class="toggle-btn" onclick="showSolution('sol-6')">Показать решение</button>
+            <div id="sol-5" class="solution-content">
+                <strong>Решение:</strong><br>
+                Применяем формулу суммы синусов: $2\sin\frac{x+3x}{2}\cos\frac{x-3x}{2} = 2\sin 2x \cos(-x) = 2\sin 2x \cos x = 0$.<br>
+                $4\sin x \cos^2 x = 0$.<br>
+                Либо $\sin x = 0 \Rightarrow x = \pi n$, либо $\cos x = 0 \Rightarrow x = \frac{\pi}{2} + \pi k$.<br>
+                Объединяя серии: $x = \frac{\pi n}{2}, n \in \mathbb{Z}$.<br>
+                <strong>Ответ:</strong> $\frac{\pi n}{2}, n \in \mathbb{Z}$.
+            </div>
+        </div>
+
+        <!-- Задача 6: Отбор корней (подготовка к ЕГЭ) -->
+        <div class="task-card">
+            <span class="difficulty-badge badge-hard">Сложный</span>
+            <div class="equation">Задание 6. Решите уравнение: $\cos 2x = \sin x$ на отрезке $[-\pi; \pi]$</div>
+            <button class="toggle-btn" onclick="showSolution('sol-7')">Показать решение</button>
+            <div id="sol-6" class="solution-content">
+                <strong>Решение:</strong><br>
+                Замена синуса через косинус: $1 - 2\sin^2 x = \sin x \Rightarrow 2\sin^2 x + \sin x - 1 = 0$.<br>
+                Пусть $t = \sin x$. Корни квадратного уравнения: $t_1 = 0.5, t_2 = -1$.<br>
+                1) $\sin x = 0.5 \Rightarrow x = (-1)^k \frac{\pi}{6} + \pi k$. На отрезке это $-\frac{5\pi}{6}, -\frac{\pi}{6}, \frac{\pi}{6}, \frac{5\pi}{6}$.<br>
+                2) $\sin x = -1 \Rightarrow x = -\frac{\pi}{2} + 2\pi k$. На отрезке это $-\frac{\pi}{2}$.<br>
+                <strong>Ответ:</strong> $-\frac{5\pi}{6}, -\frac{\pi}{2}, -\frac{\pi}{6}, \frac{\pi}{6}, \frac{5\pi}{6}$.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-hard">Сложный</span>
+            <div class="equation">Задание 7 Решите систему: $\begin{cases} \sin x = y \\ \cos x = 1 - y \end{cases}$</div>
+        </div>
+
+    </section>
+
+    <!-- ДОМАШНЕЕ ЗАДАНИЕ (~15-20 мин) -->
+    <section class="card homework-section">
+        <h2>🏠 Домашнее задание</h2>
+        <p class="instruction">Запишите ответы в тетрадь. Для самопроверки используйте значения тригонометрического круга.</p>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-easy">Легкий</span>
+            <div class="equation">ДЗ-1. Вычислите: $\text{tg}(\pi - \frac{\pi}{4})$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-easy">Легкий</span>
+            <div class="equation">ДЗ-2. Упростите: $\frac{\sin(2\pi - \alpha)}{\cos(\frac{3\pi}{2} + \alpha)}$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">ДЗ-3. Решите уравнение: $4\cos^2 x - 1 = 0$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">ДЗ-4. Найдите наибольший отрицательный корень уравнения: $\sin x = \cos x$</div>
+        </div>
+
+        <!-- НОВЫЕ ЗАДАЧИ ДОМАШНЕГО БЛОКА -->
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-easy">Легкий</span>
+            <div class="equation">ДЗ-5. Вычислите: $\text{ctg}(\frac{3\pi}{2}) + \cos(\frac{5\pi}{2})$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">ДЗ-6. Решите уравнение: $\cos 2x = 1 + \sin x$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-medium">Средний</span>
+            <div class="equation">ДЗ-7. Решите неравенство: $\text{tg} x > 1$ на интервале $(0; \pi)$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-hard">Сложный</span>
+            <div class="equation">ДЗ-8. Решите уравнение: $2\cos^2(x + \frac{\pi}{4}) - 1 = 0$</div>
+        </div>
+
+        <div class="task-card">
+            <span class="difficulty-badge badge-hard">Сложный</span>
+            <div class="equation">ДЗ-9. Сколько корней имеет уравнение $\sin x = \cos 2x$ на отрезке $[0; 3\pi]$?</div>
+        </div>
+    </section>
+
+    <footer class="page-footer">
+        © 2026 Репетиторский центр. Время выполнения блока: ~60 минут.
+    </footer>
+</div>
+
+<script>
+    function showSolution(id) {
+        const sol = document.getElementById(id);
+        if (sol.style.display === 'block') {
+            sol.style.display = 'none';
+        } else {
+            sol.style.display = 'block';
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тригонометрическая таблица (до 180 градусов)</title>
+    
+    <!-- MathJax для формул -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+      window.MathJax = {
+        tex: { inlineMath: [['$', '$']], displayMath: [['$$', '$$']] }
+      };
+    </script>
+
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --bg-light: #f4f6f7;
+            --text-dark: #2c3e50;
+            --border-color: #bdc3c7;
+            --danger-bg: #ffebee;
+            --danger-border: #ffcdd2;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-top: 0;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        /* Стили для таблицы */
+        table.trig-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.1em;
+        }
+        
+        table.trig-table th, table.trig-table td {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+        }
+        
+        table.trig-table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        table tr:nth-child(even) {
+            background-color: #f9fbfd;
+        }
+        
+        .angle-rad {
+            font-style: italic;
+            color: #555;
+            font-size: 0.95em;
+        }
+        
+        .fraction {
+            text-align: center;
+            min-width: 90px;
+        }
+        
+        .undefined-cell {
+            color: #a0a0a0;
+            font-style: italic;
+            background-color: var(--danger-bg);
+            border-color: var(--danger-border);
+        }
+        
+        .rule-box {
+            background-color: var(--bg-light);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .hand-method {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .hand-item {
+            text-align: center;
+        }
+        
+        .hand-img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            opacity: 0.9;
+        }
+        
+        footer {
+            text-align: center;
+            color: #95a5a6;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h1>Тригонометрическая таблица ($0^{\circ} \dots 180^{\circ}$)</h1>
+        <p class="subtitle">Значения $\sin\alpha$, $\cos\alpha$, $\text{tg}\alpha$ и $\text{ctg}\alpha$.</p>
+
+        <table class="trig-table">
+            <thead>
+                <tr>
+                    <th>Угол (градусы)</th>
+                    <th>Угол (радианы)</th>
+                    <th>$\sin\alpha$</th>
+                    <th>$\cos\alpha$</th>
+                    <th>$\text{tg}\alpha$</th>
+                    <th>$\text{ctg}\alpha$</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>$0^{\circ}$</td>
+                    <td><span class="angle-rad">$0$</span></td>
+                    <td class="fraction">$0$</td>
+                    <td class="fraction">$1$</td>
+                    <td class="fraction">$0$</td>
+                    <td class="undefined-cell">—</td>
+                </tr>
+                <tr>
+                    <td>$30^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{\pi}{6}$</span></td>
+                    <td class="fraction">$\frac{1}{2}$</td>
+                    <td class="fraction">$\frac{\sqrt{3}}{2}$</td>
+                    <td class="fraction">$\frac{\sqrt{3}}{3}$</td>
+                    <td class="fraction">$\sqrt{3}$</td>
+                </tr>
+                <tr>
+                    <td>$45^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{\pi}{4}$</span></td>
+                    <td class="fraction">$\frac{\sqrt{2}}{2}$</td>
+                    <td class="fraction">$\frac{\sqrt{2}}{2}$</td>
+                    <td class="fraction">$1$</td>
+                    <td class="fraction">$1$</td>
+                </tr>
+                <tr>
+                    <td>$60^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{\pi}{3}$</span></td>
+                    <td class="fraction">$\frac{\sqrt{3}}{2}$</td>
+                    <td class="fraction">$\frac{1}{2}$</td>
+                    <td class="fraction">$\sqrt{3}$</td>
+                    <td class="fraction">$\frac{\sqrt{3}}{3}$</td>
+                </tr>
+                <tr>
+                    <td>$90^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{\pi}{2}$</span></td>
+                    <td class="fraction">$1$</td>
+                    <td class="fraction">$0$</td>
+                    <td class="undefined-cell">—</td>
+                    <td class="fraction">$0$</td>
+                </tr>
+                <tr>
+                    <td>$120^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{2\pi}{3}$</span></td>
+                    <td class="fraction">$\frac{\sqrt{3}}{2}$</td>
+                    <td class="fraction">$-\frac{1}{2}$</td>
+                    <td class="fraction">$-\sqrt{3}$</td>
+                    <td class="fraction">$-\frac{\sqrt{3}}{3}$</td>
+                </tr>
+                <tr>
+                    <td>$135^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{3\pi}{4}$</span></td>
+                    <td class="fraction">$\frac{\sqrt{2}}{2}$</td>
+                    <td class="fraction">$-\frac{\sqrt{2}}{2}$</td>
+                    <td class="fraction">$-1$</td>
+                    <td class="fraction">$-1$</td>
+                </tr>
+                <tr>
+                    <td>$150^{\circ}$</td>
+                    <td><span class="angle-rad">$\frac{5\pi}{6}$</span></td>
+                    <td class="fraction">$\frac{1}{2}$</td>
+                    <td class="fraction">$-\frac{\sqrt{3}}{2}$</td>
+                    <td class="fraction">$-\frac{\sqrt{3}}{3}$</td>
+                    <td class="fraction">$-\sqrt{3}$</td>
+                </tr>
+                <tr>
+                    <td>$180^{\circ}$</td>
+                    <td><span class="angle-rad">$\pi$</span></td>
+                    <td class="fraction">$0$</td>
+                    <td class="fraction">$-1$</td>
+                    <td class="fraction">$0$</td>
+                    <td class="undefined-cell">—</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="rule-box">
+            <strong>Как запомнить значения синуса:</strong> Запишите под углом $0^{\circ}$ пять дробей: $\frac{\sqrt{0}}{2}, \frac{\sqrt{1}}{2}, \frac{\sqrt{2}}{2}, \frac{\sqrt{3}}{2}, \frac{\sqrt{4}}{2}$. Это синусы от $0^{\circ}$ до $180^{\circ}$ с шагом $30^{\circ}$ (в I четверти они положительны, во II — также положительны).
+        </div>
+
+        <div class="rule-box">
+            <strong>Как запомнить значения косинуса:</strong> Идут в обратном порядке относительно синусов. От $1$ к $-1$. В I четверти положительные, во II четверти — отрицательные.
+        </div>
+
+        <h2 style="text-align: center; margin-top: 40px;">🖐️ Правило руки</h2>
+        <p>Согните руку в локте ладонью к себе. Пронумеруйте пальцы, начиная с мизинца:</p>
+        <ol>
+            <li>Мизинец — $0^{\circ}$ ($\sin 0 = 0$)</li>
+            <li>Безымянный — $30^{\circ}$ ($\sin 30^{\circ} = \frac{1}{2}$)</li>
+            <li>Средний — $45^{\circ}$ ($\sin 45^{\circ} = \frac{\sqrt{2}}{2}$)</li>
+            <li>Указательный — $60^{\circ}$ ($\sin 60^{\circ} = \frac{\sqrt{3}}{2}$)</li>
+            <li>Большой — $90^{\circ}$ ($\sin 90^{\circ} = 1$)</li>
+        </ol>
+        <p>Чтобы найти синус нужного угла, загните этот палец. Количество пальцев слева от загнутого — это число под корнем в числителе. В знаменателе всегда остается $2$.</p>
+        <div class="hand-method">
+            <div class="hand-item">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIj4KICA8IS0tIEJpZyBsYXllciBmb3IgZGVtb25zdHJhdGlvbiAtLT4KICA8Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSI2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjkyOWQyIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8IS0tIEFsdCBjaGFydCAtLT4KICA8bGluZSB4MT0iNzUiIHkxPSIxMCIgeDI9Ijc1IiB5Mj0iMTQwIiBzdHJva2U9IiMyOTI5ZDEiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxsaW5lIHgxPSIxMCIgeTE9Ijc1IiB4Mj0iMTQwIiB5Mj0iNzUiIHN0cm9rZT0iIzI5MjkkMSIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogIDwhLS0gVGFncyBmb3IgcGFuZWxzIC0tPgogIDx0ZXh0IHg9IjEwIiB5PSI5MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNiI+RjwvdGV4dD4KICA8dGV4dCB4PSI3NSIgeT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTYiPjA8L3RleHQ+CiAgPHRleHQgeD0iNzUiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNiI+KzwvdGV4dD4KPC9zdmc+" alt="Rule of hand for sine" class="hand-img">
+                <p>Считаем пальцы <strong>слева</strong> от загнутого</p>
+            </div>
+            <div class="hand-item">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNTAiIGhlaWdodD0iMTUwIj4KICA8IS0tIEJpZyBsYXllciBmb3IgZGVtb25zdHJhdGlvbiAtLT4KICA8Y2lyY2xlIGN4PSI3NSIgY3k9Ijc1IiByPSI2MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMjkyOWQyIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8IS0tIEFsdCBjaGFydCAtLT4KICA8bGluZSB4MT0iNzUiIHkxPSIxMCIgeDI9Ijc1IiB5Mj0iMTQwIiBzdHJva2U9IiMyOTI5ZDEiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxsaW5lIHgxPSIxMCIgeTE9Ijc1IiB4Mj0iMTQwIiB5Mj0iNzUiIHN0cm9rZT0iIzI5MjkkMSIgc3Ryb2tlLXdpZHRoPSIyIi8+CgogIDwhLS0gVGFnZyBmb3IgQ29zIC0tPgogIDx0ZXh0IHg9IjEwIiB5PSI5MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNiI+SzwvdGV4dD4KICA8dGV4dCB4PSI3NSIgeT0iMjAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTYiPjA8L3RleHQ+CiAgPHRleHQgeD0iNzUiIHk9IjE1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNiI+KzwvdGV4dD4KPC9zdmc+" alt="Rule of hand for cosine" class="hand-img">
+                <p>Считаем пальцы <strong>справа</strong> от загнутого</p>
+            </div>
+        </div>
+
+        <div class="rule-box">
+            <strong>Котангенс ($\text{ctg}\alpha$):</strong> Это перевернутый тангенс ($\frac{\cos\alpha}{\sin\alpha}$). Обратите внимание: котангенс равен нулю там, где косинус равен нулю ($90^{\circ}, 270^{\circ}$), и не определен там, где синус равен нулю ($0^{\circ}, 180^{\circ}, 360^{\circ}$).
+        </div>
+
+        <h2>🧮 Как считать углы вне I четверти?</h2>
+        <p>Используйте опорные точки ($0, \frac{\pi}{2}, \pi, \frac{3\pi}{2}$) и формулы приведения:</p>
+        <ul>
+            <li><strong>Горизонтальная ось ($0, \pi$):</strong> Название функции НЕ меняется. Знак ставим по исходной функции в нужной четверти.</li>
+            <li><strong>Вертикальная ось ($\frac{\pi}{2}, \frac{3\pi}{2}$):</strong> Название функции МЕНЯЕТСЯ (синус на косинус). Знак ставим по ИСХОДНОЙ функции.</li>
+        </ul>
+        <p><em>Пример: $\sin 150^{\circ} = \sin(180^{\circ} - 30^{\circ}) = \sin 30^{\circ} = \frac{1}{2}$ (II четверть, знак +).</em></p>
+        <p><em>Пример: $\cos 120^{\circ} = \cos(180^{\circ} - 60^{\circ}) = -\cos 60^{\circ} = -0.5$ (II четверть, знак -).</em></p>
+        <p><em>Пример: $\text{tg} 135^{\circ} = \text{tg}(180^{\circ} - 45^{\circ}) = -\text{tg} 45^{\circ} = -1$ (II четверть, знак -).</em></p>
+    </div>
+
+    <footer>
+        © 2026 Шпаргалка репетитора | Распечатайте или сохраните в закладки
+    </footer>
+
+</body>
+</html>
