@@ -193,12 +193,17 @@
 
 <!-- Подключение PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.178/pdf.min.js"></script>
+<script>
 // --- НАСТРОЙКА ---
-    <script>
-// Имя файла ДОЛЖНО совпадать с реальным именем в папке РЕГИСТР БУКВА В БУКВУ
 const url = 'bazovaya-matematika-2026-page-1-86.pdf'; 
 
-// Подключаем воркер через CDN (это обязательно для работы без веб-сервера)
+// КЛЮЧЕВОЕ ИЗМЕНЕНИЕ: Явно указываем параметры загрузки с поддержкой CORS
+const pdfjsLibOptions = {
+    cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.178/cmaps/',
+    cMapPacked: true,
+    disableRange: false, // Позволяет частичную загрузку тяжелых файлов
+};
+
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.178/build/pdf.worker.min.js';
 
 let pdfDoc = null,
@@ -222,24 +227,20 @@ const scaleText = document.getElementById('scale-text');
 function renderPage(num) {
     pageRendering = true;
     
-    // Показываем текст "загрузки" прямо поверх холста
-    ctx.fillStyle = '#f0f0f0';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#555';
-    ctx.font = '20px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText(`Загрузка страницы ${num}...`, canvas.width / 2, canvas.height / 2);
+    // Показываем лоадер
+    loadingIndicator.style.display = 'flex';
+    canvas.style.display = 'none'; // Скрываем холст до готовности новой картинки
 
+    // Загружаем страницу С УЧЕТОМ CORS
     pdfDoc.getPage(num).then(page => {
         const viewport = page.getViewport({ scale });
-        
-        // Меняем физический размер канваса под размер страницы
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-
-        const renderCtx = { canvasContext: ctx, viewport };
         
-        return page.render(renderCtx).promise;
+        return page.render({
+            canvasContext: ctx,
+            viewport: viewport
+        }).promise;
     }).then(() => {
         pageRendering = false;
         
@@ -248,7 +249,7 @@ function renderPage(num) {
             pageNumIsPending = null;
         }
         
-        // Обновляем интерфейс после успешной отрисовки
+        // Обновляем UI
         loadingIndicator.style.display = 'none';
         canvas.style.display = 'block';
         
@@ -256,10 +257,11 @@ function renderPage(num) {
         prevButton.disabled = (pageNum <= 1);
         nextButton.disabled = (pageNum >= pdfDoc.numPages);
         scaleText.textContent = Math.round(scale * 100) + '%';
+        
     }).catch(err => {
-        console.error("Ошибка рендеринга:", err);
+        console.error("Ошибка отрисовки:", err);
         loadingIndicator.style.display = 'none';
-        errorMsg.textContent = 'Ошибка при отображении страницы.';
+        errorMsg.innerHTML = '<strong>Ошибка отображения.</strong><br>Попробуйте обновить страницу или проверьте консоль разработчика.';
         errorMsg.style.display = 'block';
     });
 }
@@ -272,29 +274,29 @@ function queueRenderPage(num) {
     }
 }
 
-// Загрузка документа
-pdfjsLib.getDocument(url).promise.then(pdfDocument => {
+// ГЛАВНАЯ ЗАГРУЗКА ДОКУМЕНТА
+pdfjsLib.getDocument({ url: url, ...pdfjsLibOptions })
+.promise.then(pdfDocument => {
     pdfDoc = pdfDocument;
     pageCountEl.textContent = pdfDoc.numPages;
     
-    // Активация кнопок сразу после получения данных о количестве страниц
+    // Сразу активируем кнопки навигации
     prevButton.disabled = (pageNum <= 1);
     nextButton.disabled = (pageNum >= pdfDoc.numPages);
     
     renderPage(pageNum);
 }).catch(error => {
-    // Если файл не загрузился вообще (ошибка сети или пути)
-    console.error("Критическая ошибка загрузки PDF:", error);
+    console.error("ОШИБКА ЗАГРУЗКИ PDF:", error);
     loadingIndicator.style.display = 'none';
     
-    let userMessage = 'Не удалось открыть документ.';
-    if (error.message.includes('404')) {
-        userMessage = `Файл <strong>"${url}"</strong> не найден.<br><small style="color:#e74c3c;">Проверьте ИМЯ файла и его РЕГИСТР (большие/маленькие буквы).</small>`;
-    } else if (error.name === 'InvalidPDFException') {
-        userMessage = 'Файл поврежден или имеет неподдерживаемую структуру.';
+    let msg = "Не удалось загрузить PDF.";
+    if (error.name === 'MissingPDFException') {
+        msg = `Файл <strong>"${url}"</strong> не найден.<br><small style="color:#e74c3c;">Проверьте имя файла и регистр букв (большие/маленькие). Файл должен лежать рядом с этим .html файлом.</small>`;
+    } else if (error.message.includes('network') || error.message.includes('CORS')) {
+        msg = "Браузер заблокировал доступ к файлу. <strong>Это ошибка сервера GitHub Pages (CORS).</strong><br>Чтобы всё заработало, запустите сайт через Live Server (в VS Code) или опубликуйте папку на Netlify/Vercel.";
     }
     
-    errorMsg.innerHTML = `${userMessage}<br><small>(${error.message})</small>`;
+    errorMsg.innerHTML = msg;
     errorMsg.style.display = 'block';
 });
 
@@ -319,35 +321,31 @@ document.getElementById('page-number').addEventListener('change', e => {
     }
 });
 
-// Зумирование
+// Зум
 let currentScale = scale;
-zoomInBtn.addEventListener('click', () => {
-    if (currentScale >= 2.5) return;
-    currentScale += 0.25;
-    applyZoom();
-});
-
-zoomOutBtn.addEventListener('click', () => {
-    if (currentScale <= 0.5) return;
-    currentScale -= 0.25;
-    applyZoom();
-});
-
 function applyZoom() {
-    scale = currentScale;
     canvas.style.transform = `scale(${currentScale / 1.3})`;
     scaleText.textContent = Math.round(currentScale * 100) + '%';
-    // Перерисовываем страницу при зуме
-    if (!pageRendering) {
-        renderPage(pageNum);
-    }
+    if (!pageRendering) renderPage(pageNum);
 }
 
-// Горячие клавиши
+zoomInBtn.addEventListener('click', () => { 
+    if (currentScale >= 2.5) return; 
+    currentScale += 0.25; 
+    applyZoom(); 
+});
+zoomOutBtn.addEventListener('click', () => { 
+    if (currentScale <= 0.5) return; 
+    currentScale -= 0.25; 
+    applyZoom(); 
+});
+
+// Стрелки клавиатуры
 document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowLeft') prevButton.click();
     if (e.key === 'ArrowRight') nextButton.click();
 });
+
 </script>
 </body>
 </html>
