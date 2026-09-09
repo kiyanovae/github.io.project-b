@@ -193,71 +193,77 @@
 
 <!-- Подключение PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.178/pdf.min.js"></script>
-<script>
-// Настройка пути к рабочему воркеру (КРИТИЧНО ВАЖНО ДЛЯ РАБОТЫ БЕЗ СЕРВЕРА!)
+// --- НАСТРОЙКА ---
+    <script>
+// Имя файла ДОЛЖНО совпадать с реальным именем в папке РЕГИСТР БУКВА В БУКВУ
+const url = 'bazovaya-matematika-2026-page-1-86.pdf'; 
+
+// Подключаем воркер через CDN (это обязательно для работы без веб-сервера)
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.178/build/pdf.worker.min.js';
 
 let pdfDoc = null,
     pageNum = 1,
     pageRendering = false,
-    pageNumPending = null,
+    pageNumIsPending = null,
     scale = 1.3;
 
 const canvas = document.getElementById('pdf-canvas');
 const ctx = canvas.getContext('2d');
-const container = document.getElementById('pdf-container');
 const loadingIndicator = document.getElementById('loading-spinner');
 const errorMsg = document.getElementById('error-message');
 const pageNumEl = document.getElementById('page_num');
 const pageCountEl = document.getElementById('page_count');
 const prevButton = document.getElementById('prev-page');
 const nextButton = document.getElementById('next-page');
+const zoomInBtn = document.getElementById('zoom-in');
+const zoomOutBtn = document.getElementById('zoom-out');
+const scaleText = document.getElementById('scale-text');
 
-// Путь к вашему файлу (Положите PDF рядом с этим HTML файлом)
-const url = 'bazovaya-matematika-2026-page-1-86.pdf'; 
-
-/**
- * Получение страницы и её отрисовка
- */
 function renderPage(num) {
     pageRendering = true;
     
-    // Показываем лоадер во время рендера тяжелых страниц
-    loadingIndicator.textContent = `Отрисовка страницы ${num}...`;
-    
+    // Показываем текст "загрузки" прямо поверх холста
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#555';
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(`Загрузка страницы ${num}...`, canvas.width / 2, canvas.height / 2);
+
     pdfDoc.getPage(num).then(page => {
         const viewport = page.getViewport({ scale });
+        
+        // Меняем физический размер канваса под размер страницы
         canvas.height = viewport.height;
         canvas.width = viewport.width;
-        
-        const renderCtx = {
-            canvasContext: ctx,
-            viewport: viewport
-        };
-        
-        page.render(renderCtx).promise.then(() => {
-            pageRendering = false;
-            
-            if (pageNumIsPending !== null) {
-                renderPage(pageNumIsPending);
-                pageNumIsPending = null;
-            }
-            
-            loadingIndicator.style.display = 'none'; // Скрываем лоадер
-            canvas.style.display = 'block'; // Показываем канвас
-        });
-    }).catch(err => {
-        console.error(err);
-        errorMsg.textContent = 'Ошибка при отрисовке страницы.';
-        loadingIndicator.style.display = 'none';
-    });
 
-    pageNumEl.textContent = num;
+        const renderCtx = { canvasContext: ctx, viewport };
+        
+        return page.render(renderCtx).promise;
+    }).then(() => {
+        pageRendering = false;
+        
+        if (pageNumIsPending !== null) {
+            renderPage(pageNumIsPending);
+            pageNumIsPending = null;
+        }
+        
+        // Обновляем интерфейс после успешной отрисовки
+        loadingIndicator.style.display = 'none';
+        canvas.style.display = 'block';
+        
+        pageNumEl.textContent = num;
+        prevButton.disabled = (pageNum <= 1);
+        nextButton.disabled = (pageNum >= pdfDoc.numPages);
+        scaleText.textContent = Math.round(scale * 100) + '%';
+    }).catch(err => {
+        console.error("Ошибка рендеринга:", err);
+        loadingIndicator.style.display = 'none';
+        errorMsg.textContent = 'Ошибка при отображении страницы.';
+        errorMsg.style.display = 'block';
+    });
 }
 
-/**
- * Очередь отрисовки (чтобы быстро переключать страницы)
- */
 function queueRenderPage(num) {
     if (pageRendering) {
         pageNumIsPending = num;
@@ -266,26 +272,33 @@ function queueRenderPage(num) {
     }
 }
 
-/**
- * Инициализация документа
- */
+// Загрузка документа
 pdfjsLib.getDocument(url).promise.then(pdfDocument => {
     pdfDoc = pdfDocument;
     pageCountEl.textContent = pdfDoc.numPages;
     
-    // Проверяем кнопки навигации
+    // Активация кнопок сразу после получения данных о количестве страниц
     prevButton.disabled = (pageNum <= 1);
     nextButton.disabled = (pageNum >= pdfDoc.numPages);
     
     renderPage(pageNum);
 }).catch(error => {
-    console.error("PDF Load Error:", error);
+    // Если файл не загрузился вообще (ошибка сети или пути)
+    console.error("Критическая ошибка загрузки PDF:", error);
     loadingIndicator.style.display = 'none';
-    errorMsg.textContent = 'Не удалось загрузить PDF. Убедитесь, что файл Bazovaya_matematika_2026.pdf находится в той же папке, что и index.html.';
+    
+    let userMessage = 'Не удалось открыть документ.';
+    if (error.message.includes('404')) {
+        userMessage = `Файл <strong>"${url}"</strong> не найден.<br><small style="color:#e74c3c;">Проверьте ИМЯ файла и его РЕГИСТР (большие/маленькие буквы).</small>`;
+    } else if (error.name === 'InvalidPDFException') {
+        userMessage = 'Файл поврежден или имеет неподдерживаемую структуру.';
+    }
+    
+    errorMsg.innerHTML = `${userMessage}<br><small>(${error.message})</small>`;
     errorMsg.style.display = 'block';
 });
 
-// Обработчики кнопок
+// Навигация
 prevButton.addEventListener('click', () => {
     if (pageNum <= 1) return;
     pageNum--;
@@ -298,5 +311,43 @@ nextButton.addEventListener('click', () => {
     queueRenderPage(pageNum);
 });
 
+document.getElementById('page-number').addEventListener('change', e => {
+    const val = parseInt(e.target.value);
+    if (!isNaN(val) && val > 0 && val <= pdfDoc?.numPages) {
+        pageNum = val;
+        queueRenderPage(pageNum);
+    }
+});
+
+// Зумирование
+let currentScale = scale;
+zoomInBtn.addEventListener('click', () => {
+    if (currentScale >= 2.5) return;
+    currentScale += 0.25;
+    applyZoom();
+});
+
+zoomOutBtn.addEventListener('click', () => {
+    if (currentScale <= 0.5) return;
+    currentScale -= 0.25;
+    applyZoom();
+});
+
+function applyZoom() {
+    scale = currentScale;
+    canvas.style.transform = `scale(${currentScale / 1.3})`;
+    scaleText.textContent = Math.round(currentScale * 100) + '%';
+    // Перерисовываем страницу при зуме
+    if (!pageRendering) {
+        renderPage(pageNum);
+    }
+}
+
+// Горячие клавиши
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') prevButton.click();
+    if (e.key === 'ArrowRight') nextButton.click();
+});
+</script>
 </body>
 </html>
