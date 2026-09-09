@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>База знаний по математике | Репетитор Елизавета Киянова</title>
+    
+    <!-- Подключение стилей -->
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --bg-light: #f4f6f7;
+            --text-dark: #2c3e50;
+            --border-color: #bdc3c7;
+            --success-bg: #e8f8f5;
+            --pdf-viewer-height: 80vh;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 2.2em;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            margin-top: 10px;
+        }
+
+        .nav-grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            color: inherit;
+            border-left: 5px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-left-color: var(--primary-color);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .tag {
+            display: inline-block;
+            background: var(--success-bg);
+            color: #27ae60;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* Стили для встроенного PDF */
+        .pdf-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pdf-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: var(--bg-light);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background: #2472a8;
+        }
+
+        #pdf-canvas-container {
+            position: relative;
+            width: 100%;
+            height: v-bind(pdf_viewer_height);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            background: #fafafa;
+        }
+
+        #pdf-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .page-input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            color: #95a5a6;
+            margin-top: 40px;
+            padding: 20px 0;
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Тригонометрическая таблица</h1>
+        <p class="subtitle">Интерактивный справочник ЕГЭ-2026</p>
+    </header>
+
+    <!-- Блок просмотра PDF -->
+    <div id="pdf-container" style="background: white; border-radius: 10px; padding: 20px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); text-align: center; min-height: 700px; display: flex; align-items: center; justify-content: center; color: #95a5a6; position: relative;">
+        <div id="loading-spinner" style="font-size: 24px;">Загружаю справочные материалы... 📄</div>
+        <canvas id="pdf-canvas" style="display: none; width: 100%;"></canvas>
+        <div id="error-message" style="color: red; display: none;"></div>
+    </div>
+
+    <!-- Навигация -->
+    <div style="text-align: center; gap: 15px; display: flex; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+        <button id="prev-page" disabled style="padding: 12px 20px; font-size: 16px; cursor: pointer;">&larr; Назад</button>
+        <span style="align-self: center; font-size: 1.1em;">Страница: <span id="page_num">1</span> / <span id="page_count">?</span></span>
+        <button id="next-page" disabled style="padding: 12px 20px; font-size: 16px; cursor: pointer;">Вперед &rarr;</button>
+    </div>
+
+    <footer style="margin-top: 40px;">
+        © 2026 Шпаргалка репетитора | Работает на базе GigaChat
+    </footer>
+</div>
+
+<!-- Подключение PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.178/pdf.min.js"></script>
+<script>
+// Настройка пути к рабочему воркеру (КРИТИЧНО ВАЖНО ДЛЯ РАБОТЫ БЕЗ СЕРВЕРА!)
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.178/build/pdf.worker.min.js';
+
+let pdfDoc = null,
+    pageNum = 1,
+    pageRendering = false,
+    pageNumPending = null,
+    scale = 1.3;
+
+const canvas = document.getElementById('pdf-canvas');
+const ctx = canvas.getContext('2d');
+const container = document.getElementById('pdf-container');
+const loadingIndicator = document.getElementById('loading-spinner');
+const errorMsg = document.getElementById('error-message');
+const pageNumEl = document.getElementById('page_num');
+const pageCountEl = document.getElementById('page_count');
+const prevButton = document.getElementById('prev-page');
+const nextButton = document.getElementById('next-page');
+
+// Путь к вашему файлу (Положите PDF рядом с этим HTML файлом)
+const url = 'Bazovaya_matematika_2026.pdf'; 
+
+/**
+ * Получение страницы и её отрисовка
+ */
+function renderPage(num) {
+    pageRendering = true;
+    
+    // Показываем лоадер во время рендера тяжелых страниц
+    loadingIndicator.textContent = `Отрисовка страницы ${num}...`;
+    
+    pdfDoc.getPage(num).then(page => {
+        const viewport = page.getViewport({ scale });
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        
+        const renderCtx = {
+            canvasContext: ctx,
+            viewport: viewport
+        };
+        
+        page.render(renderCtx).promise.then(() => {
+            pageRendering = false;
+            
+            if (pageNumIsPending !== null) {
+                renderPage(pageNumIsPending);
+                pageNumIsPending = null;
+            }
+            
+            loadingIndicator.style.display = 'none'; // Скрываем лоадер
+            canvas.style.display = 'block'; // Показываем канвас
+        });
+    }).catch(err => {
+        console.error(err);
+        errorMsg.textContent = 'Ошибка при отрисовке страницы.';
+        loadingIndicator.style.display = 'none';
+    });
+
+    pageNumEl.textContent = num;
+}
+
+/**
+ * Очередь отрисовки (чтобы быстро переключать страницы)
+ */
+function queueRenderPage(num) {
+    if (pageRendering) {
+        pageNumIsPending = num;
+    } else {
+        renderPage(num);
+    }
+}
+
+/**
+ * Инициализация документа
+ */
+pdfjsLib.getDocument(url).promise.then(pdfDocument => {
+    pdfDoc = pdfDocument;
+    pageCountEl.textContent = pdfDoc.numPages;
+    
+    // Проверяем кнопки навигации
+    prevButton.disabled = (pageNum <= 1);
+    nextButton.disabled = (pageNum >= pdfDoc.numPages);
+    
+    renderPage(pageNum);
+}).catch(error => {
+    console.error("PDF Load Error:", error);
+    loadingIndicator.style.display = 'none';
+    errorMsg.textContent = 'Не удалось загрузить PDF. Убедитесь, что файл Bazovaya_matematika_2026.pdf находится в той же папке, что и index.html.';
+    errorMsg.style.display = 'block';
+});
+
+// Обработчики кнопок
+prevButton.addEventListener('click', () => {
+    if (pageNum <= 1) return;
+    pageNum--;
+    queueRenderPage(pageNum);
+});
+
+nextButton.addEventListener('click', () => {
+    if (pageNum >= pdfDoc?.numPages) return;
+    pageNum++;
+    queueRenderPage(pageNum);
+});
+
+</body>
+</html>
